@@ -3,6 +3,8 @@ package response
 import (
 	"net/http"
 	"time"
+
+	val "github.com/Cesarmosqueira/coffeshop_api/internal/validation"
 )
 
 type Response struct {
@@ -30,3 +32,18 @@ func NewOkResponse(message string) Response {
 	}
 }
 
+type ValidationErrorResponse struct {
+	Timestamp   time.Time             `json:"timestamp"`
+	Code        int                   `json:"code"`
+	Status      string                `json:"status"`
+	Validations []val.ValidationError `json:"validations"`
+}
+
+func NewValidationErrorResponse(errors []val.ValidationError) (int, ValidationErrorResponse) {
+	return http.StatusBadRequest, ValidationErrorResponse{
+		Timestamp:   time.Now(),
+		Code:        http.StatusBadRequest,
+		Status:      http.StatusText(http.StatusBadRequest),
+		Validations: errors,
+	}
+}
