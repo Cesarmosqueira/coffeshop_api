@@ -5,6 +5,7 @@ import (
 
 	"github.com/Cesarmosqueira/coffeshop_api/pkg/database"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 type store struct {
@@ -27,6 +28,7 @@ func NewProductStore() ProductStore {
 
 
 func (s *store) Create(product Product) (Product, error) {
+	product.ID = primitive.NewObjectID()
 	_, err := s.collection.InsertOne(context.TODO(), product)
 	if err != nil {
 		return product, err
