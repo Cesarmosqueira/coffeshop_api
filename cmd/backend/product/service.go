@@ -27,7 +27,11 @@ func NewProductService() ProductService {
 func (s *service) CreateProduct(request ProductDto) (p.Product, error) {
 	product := p.Product{
 		Name:	request.Name,
-		Cost:	request.Cost,
+		Price		:	 request.Price,
+		Description	:	 request.Description,
+		Branch		:	 request.Branch,
+		Stars		:	 request.Stars,
+		ImageUrl	:	 request.ImageUrl,
 	}
 
 
@@ -54,8 +58,12 @@ func (s *service) ListProducts() ([]p.Product, error) {
 func (s *service) GetProduct(id string) (ProductDto, error) {
 	product, err := s.productStore.GetById(id)
 	productDto := ProductDto{
-		Name: product.Name,
-		Cost: product.Cost,
+		Name		:	product.Name,
+		Price		:	 product.Price,
+		Description	:	 product.Description,
+		Branch		:	 product.Branch,
+		Stars		:	 product.Stars,
+		ImageUrl	:	 product.ImageUrl,
 	}
 	if err != nil {
 		return ProductDto{}, err
