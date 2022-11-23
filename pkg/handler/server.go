@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -52,4 +53,5 @@ func (s *Server) EnableApi(fn interface{}) {
 func (s *Server) Run() {
 	log.Println("[Server] Running on port: " + s.port[1:])
 	s.router.Run(s.port)
+	fmt.Println("Bye")
 }
