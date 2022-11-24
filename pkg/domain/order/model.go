@@ -14,15 +14,3 @@ type Order struct {
 	Invoice			float32			`mongo:"invoice" json:"invoice" bson:"invoice"`
 	Items			[]o.Product		`mongo:"items" json:"items" bson:"items"`
 }
-
-// returns total order price and error
-func (o *Order) addItem(product o.Product) (float64, error) {
-	if len(o.Items) == 0 {
-		o.Invoice = 0.0
-	}
-
-	o.Items = append(o.Items, product)
-	o.Invoice += product.Price
-
-	return float64(o.Invoice), nil
-}

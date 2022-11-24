@@ -32,6 +32,7 @@ func (s *service) CreateProduct(request ProductDto) (p.Product, error) {
 		Description	:	 request.Description,
 		Branch		:	 request.Branch,
 		Stars		:	 request.Stars,
+		ProductCode :    request.ProductCode,
 		ImageUrl	:	 request.ImageUrl,
 	}
 

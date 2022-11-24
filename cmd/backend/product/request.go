@@ -11,6 +11,7 @@ type ProductDto struct {
 	Description	string		`json:"description"`
 	Branch		string		`json:"branch"`
 	Stars		int32		`json:"stars"`
+	ProductCode string 		`json:"productCode"`
 	ImageUrl	string		`json:"imageUrl"`
 }
 
@@ -22,6 +23,7 @@ func (p *ProductDto) Validate() []val.ValidationError {
 	validator.NotBlank("Description")
 	validator.NotBlank("Branch")
 	validator.NotBlank("Stars")
+	validator.NotBlank("ProductCode")
 
 	validator.MinLength("Name", 4)
 

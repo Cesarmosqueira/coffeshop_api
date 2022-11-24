@@ -10,6 +10,7 @@ import (
 
 type service struct {
 	orderStore o.OrderStore
+	productStore p.ProductStore
 }
 
 type OrderService interface {
@@ -22,6 +23,7 @@ type OrderService interface {
 func NewOrderService() OrderService {
 	return &service{
 		orderStore: o.NewOrderStore(),
+		productStore: p.NewProductStore(),
 	}
 }
 
@@ -30,10 +32,22 @@ func (s *service) CreateOrder(request OrderDto) (o.Order, error) {
 	order := o.Order{
 		CreatedBy : request.CreatedBy,
 		CreatedAt : request.CreatedAt,
-		Invoice	  : request.Invoice,
+		Invoice	  : 0.0,
 		Items	  : make([]p.Product, 0),
 	}
 
+	for _, productId := range request.Items {
+
+		product, err := s.productStore.GetById(productId)
+		if err != nil {
+			log.Println(err)
+			return order, err
+		}
+
+		order.Invoice += product.Price
+
+		order.Items = append(order.Items, product)
+	}
 
 	order, err := s.orderStore.Create(order)
 	if err != nil {
