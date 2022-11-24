@@ -3,33 +3,33 @@ package api
 import (
 	"net/http"
 
-	p "github.com/Cesarmosqueira/coffeshop_api/cmd/backend/product"
+	o "github.com/Cesarmosqueira/coffeshop_api/cmd/backend/order"
 	r "github.com/Cesarmosqueira/coffeshop_api/pkg/domain/response"
 	"github.com/gin-gonic/gin"
 )
 
 type webApi struct {
 	router  *gin.RouterGroup
-	service p.ProductService
+	service o.OrderService
 }
 
-type ProductWebApi interface {
-	CreateProduct()
+type OrderWebApi interface {
+	CreateOrder()
 	GetById()
-	ListProducts()
+	ListOrders()
 	DeleteById()
 }
 
-func NewProductWebApi(router *gin.Engine) ProductWebApi {
+func NewOrderWebApi(router *gin.Engine) OrderWebApi {
 	return &webApi{
-		router:  router.Group("/api/products"),
-		service: p.NewProductService(),
+		router:  router.Group("/api/orders"),
+		service: o.NewOrderService(),
 	}
 }
 
-func (a *webApi) CreateProduct() {
+func (a *webApi) CreateOrder() {
 	a.router.POST("", func(c *gin.Context) {
-		var body p.ProductDto
+		var body o.OrderDto
 		if err := c.ShouldBindJSON(&body); err != nil {
 			c.AbortWithStatusJSON(r.NewResponse(http.StatusInternalServerError, "Cannot unmarshal the object"))
 			return
@@ -41,7 +41,7 @@ func (a *webApi) CreateProduct() {
 			return
 		}
 
-		product, err := a.service.CreateProduct(body)
+		order, err := a.service.CreateOrder(body)
 
 
 		if err != nil {
@@ -49,45 +49,45 @@ func (a *webApi) CreateProduct() {
 			return
 		}
 
-		c.JSON(http.StatusOK, product)
+		c.JSON(http.StatusOK, order)
 	})
 }
 
-func (a *webApi) ListProducts() {
+func (a *webApi) ListOrders() {
 	a.router.GET("", func(c *gin.Context) {
-		products, err := a.service.ListProducts()
+		orders, err := a.service.ListOrders()
 
 		if err != nil {
 			c.AbortWithStatusJSON(r.NewResponse(http.StatusInternalServerError, err.Error()))
 			return
 		}
 
-		c.JSON(http.StatusOK, products)
+		c.JSON(http.StatusOK, orders)
 	})
 }
 
 func (a *webApi) GetById() {
-	a.router.GET(":productid", func(c *gin.Context) {
-		productid := c.Param("productid")
+	a.router.GET(":orderid", func(c *gin.Context) {
+		orderid := c.Param("orderid")
 
 
-		product, err := a.service.GetProduct(productid)
+		order, err := a.service.GetOrder(orderid)
 
 		if err != nil {
 			c.AbortWithStatusJSON(r.NewResponse(http.StatusInternalServerError, err.Error()))
 			return
 		}
 
-		c.JSON(http.StatusOK, product)
+		c.JSON(http.StatusOK, order)
 	})
 }
 
 func (a *webApi) DeleteById() {
-	a.router.DELETE(":productid", func(c *gin.Context) {
-		productid := c.Param("productid")
+	a.router.DELETE(":orderid", func(c *gin.Context) {
+		orderid := c.Param("orderid")
 
 
-		count, err := a.service.DeleteProduct(productid)
+		count, err := a.service.DeleteOrder(orderid)
 
 		if err != nil {
 			c.AbortWithStatusJSON(r.NewResponse(http.StatusInternalServerError, err.Error()))

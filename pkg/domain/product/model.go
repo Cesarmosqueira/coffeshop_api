@@ -1,6 +1,8 @@
 package product
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type Product struct {
 	ID		 primitive.ObjectID `bson:"_id" json:"id" mongo:"-"`
@@ -11,3 +13,4 @@ type Product struct {
 	Stars			int32		`mongo:"stars" json:"stars" bson:"stars"`
 	ImageUrl		string		`mongo:"imageUrl" json:"imageUrl" bson:"imageUrl"`
 }
+
