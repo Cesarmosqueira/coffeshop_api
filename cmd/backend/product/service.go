@@ -5,6 +5,8 @@ import (
 	"log"
 
 	p "github.com/Cesarmosqueira/coffeshop_api/pkg/domain/product"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type service struct {
@@ -62,6 +64,10 @@ func (s *service) GetProduct(id string) (p.Product, error) {
 
 	if err != nil {
 		return product, err
+	}
+	hex, _ := primitive.ObjectIDFromHex("000000000000000000000000")
+	if product.ID == hex {
+		return product, errors.New("'" + id + "' not found")
 	}
 	return product, err;
 

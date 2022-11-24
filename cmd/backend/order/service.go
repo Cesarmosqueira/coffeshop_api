@@ -6,6 +6,8 @@ import (
 
 	o "github.com/Cesarmosqueira/coffeshop_api/pkg/domain/order"
 	p "github.com/Cesarmosqueira/coffeshop_api/pkg/domain/product"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type service struct {
@@ -74,6 +76,10 @@ func (s *service) GetOrder(id string) (o.Order, error) {
 
 	if err != nil {
 		return order, err
+	}
+	hex, _ := primitive.ObjectIDFromHex("000000000000000000000000")
+	if order.ID == hex {
+		return order, errors.New("'" + id + "' not found")
 	}
 	return order, err;
 
