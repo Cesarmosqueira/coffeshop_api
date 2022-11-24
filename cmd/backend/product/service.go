@@ -13,8 +13,9 @@ type service struct {
 
 type ProductService interface {
 	CreateProduct(ProductDto) (p.Product, error)
-	GetProduct(string) (ProductDto, error)
+	GetProduct(string) (p.Product, error)
 	ListProducts() ([]p.Product, error)
+	DeleteProduct(string) (int64, error)
 }
 
 func NewProductService() ProductService {
@@ -55,19 +56,22 @@ func (s *service) ListProducts() ([]p.Product, error) {
 }
 
 
-func (s *service) GetProduct(id string) (ProductDto, error) {
+func (s *service) GetProduct(id string) (p.Product, error) {
 	product, err := s.productStore.GetById(id)
-	productDto := ProductDto{
-		Name		:	product.Name,
-		Price		:	 product.Price,
-		Description	:	 product.Description,
-		Branch		:	 product.Branch,
-		Stars		:	 product.Stars,
-		ImageUrl	:	 product.ImageUrl,
-	}
+
 	if err != nil {
-		return ProductDto{}, err
+		return product, err
 	}
-	return productDto, err;
+	return product, err;
+
+}
+
+func (s *service) DeleteProduct(id string) (int64, error) {
+	count, err := s.productStore.DeleteById(id)
+
+	if err != nil {
+		return count, err
+	}
+	return count, err;
 
 }
