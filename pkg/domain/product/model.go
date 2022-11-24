@@ -11,6 +11,7 @@ type Product struct {
 	Description		string		`mongo:"description" json:"description" bson:"description"`
 	Branch			string		`mongo:"branch" json:"branch" bson:"branch"`
 	Stars			int32		`mongo:"stars" json:"stars" bson:"stars"`
+	ProductCode 	string 		`mongo:"productCode" json:"productCode" bson:"productCode"`
 	ImageUrl		string		`mongo:"imageUrl" json:"imageUrl" bson:"imageUrl"`
 }
 
