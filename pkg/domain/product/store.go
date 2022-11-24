@@ -17,6 +17,7 @@ type store struct {
 type ProductStore interface {
 	Create (Product) (Product, error)
 	GetById (string) (Product, error)
+	GetByProductCode(string) (Product, error)
 	ListAll () ([]Product, error)
 	DeleteById (string) (int64, error)
 }
@@ -48,6 +49,14 @@ func (s *store) GetById(id string) (Product, error) {
 	}
 
 	doc := s.collection.FindOne(s.ctx, bson.M{"_id": objectId})
+	doc.Decode(&product)
+	return product, nil
+}
+
+func (s *store) GetByProductCode(productCode string) (Product, error) {
+	var product Product
+
+	doc := s.collection.FindOne(s.ctx, bson.M{"productCode": productCode})
 	doc.Decode(&product)
 	return product, nil
 }

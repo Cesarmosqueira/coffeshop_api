@@ -16,6 +16,7 @@ type webApi struct {
 type ProductWebApi interface {
 	CreateProduct()
 	GetById()
+	GetByProductCode()
 	ListProducts()
 	DeleteById()
 }
@@ -72,6 +73,22 @@ func (a *webApi) GetById() {
 
 
 		product, err := a.service.GetProduct(productid)
+
+		if err != nil {
+			c.AbortWithStatusJSON(r.NewResponse(http.StatusInternalServerError, err.Error()))
+			return
+		}
+
+		c.JSON(http.StatusOK, product)
+	})
+}
+
+func (a *webApi) GetByProductCode() {
+	a.router.GET("code/:productcode", func(c *gin.Context) {
+		productCode := c.Param("productcode")
+
+
+		product, err := a.service.GetByProductCode(productCode)
 
 		if err != nil {
 			c.AbortWithStatusJSON(r.NewResponse(http.StatusInternalServerError, err.Error()))
